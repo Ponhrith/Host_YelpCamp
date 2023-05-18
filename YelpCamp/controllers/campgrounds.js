@@ -33,6 +33,8 @@ module.exports.createCampground=async (req,res,next)=>{
     res.redirect(`/campgrounds/${campground._id}`);
 }
 
+const moment = require('moment')
+
 module.exports.showCampground=async(req,res)=>{
     const campground=await Campground.findById(req.params.id).populate({
         path:'reviews',  //populating reviews of this campground
@@ -45,6 +47,12 @@ module.exports.showCampground=async(req,res)=>{
         req.flash('error',"can't find that campground");
         return res.redirect('/campgrounds');
     }
+
+    const createdAt = campground.createdAt;
+    const currentDate = new Date();
+    const daysAgo = moment(createdAt).from(currentDate, true); // format the timestamp
+  
+
     //console.log(campground)
     res.render('campgrounds/show',{campground});
 }
