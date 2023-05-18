@@ -43,38 +43,8 @@
             </div>
             <% } %>
 
-            <script>
-                const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-                const campground = <%- JSON.stringify(campground) %>;
-            
-                function timeSince(date) {
-                    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-                    let interval = Math.floor(seconds / 31536000);
-            
-                    if (interval > 1) {
-                        return interval + " years ago";
-                    }
-                    interval = Math.floor(seconds / 2592000);
-                    if (interval > 1) {
-                        return interval + " months ago";
-                    }
-                    interval = Math.floor(seconds / 86400);
-                    if (interval > 1) {
-                        return interval + " days ago";
-                    }
-                    interval = Math.floor(seconds / 3600);
-                    if (interval > 1) {
-                        return interval + " hours ago";
-                    }
-                    interval = Math.floor(seconds / 60);
-                    if (interval > 1) {
-                        return interval + " minutes ago";
-                    }
-                    return Math.floor(seconds) + " seconds ago";
-                }
-            </script>
             <div class="card-footer text-muted">
-                <%= timeSince(campground.createdAt) %>
+                <span id="timeSince"></span>
             </div>
         </div>
 
@@ -108,4 +78,48 @@
 
 
 
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campground = <%- JSON.stringify(campground) %>;
+</script>
+
 <script src="/javascripts/showPageMap.js"></script>
+
+<script>
+    const calculateTimeSince = () => {
+        const createdAt = '<%= campground.createdAt %>'; // Get the campground's creation date from EJS
+        const seconds = Math.floor((new Date() - new Date(createdAt)) / 1000);
+        let interval = Math.floor(seconds / 31536000);
+
+        if (interval > 1) {
+            document.getElementById('timeSince').textContent = interval + " years ago";
+            return;
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) {
+            document.getElementById('timeSince').textContent = interval + " months ago";
+            return;
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval > 1) {
+            document.getElementById('timeSince').textContent = interval + " days ago";
+            return;
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) {
+            document.getElementById('timeSince').textContent = interval + " hours ago";
+            return;
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) {
+            document.getElementById('timeSince').textContent = interval + " minutes ago";
+            return;
+        }
+        document.getElementById('timeSince').textContent = Math.floor(seconds) + " seconds ago";
+    };
+
+    calculateTimeSince(); // Call the function once when the page loads
+
+    // Optionally, update the time every minute (60,000 milliseconds)
+    setInterval(calculateTimeSince, 60000);
+</script>
