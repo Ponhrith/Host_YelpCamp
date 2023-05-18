@@ -81,14 +81,13 @@
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
     const campground = <%- JSON.stringify(campground) %>;
-</script>
 
-<script src="/javascripts/showPageMap.js"></script>
-
-<script>
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const date = new Date(dateString);
         return date.toLocaleDateString(undefined, options);
     }
 </script>
+
+<script src="/javascripts/showPageMap.js"></script>
+
