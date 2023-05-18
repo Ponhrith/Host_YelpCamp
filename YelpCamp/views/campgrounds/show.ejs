@@ -50,14 +50,17 @@
                     document.write(daysElapsed + " days ago");
                 </script> -->
 
-                <% const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24)); %>
-                <% if (daysAgo === 0) { %>
-                  Today
-                <% } else if (daysAgo === 1) { %>
-                  Yesterday
-                <% } else { %>
-                  <%= daysAgo %> days ago
-                <% } %>
+                <% if (diffDays === 0) { %>
+                    <% const diffHours = Math.ceil(diffTime / (1000 * 60 * 60)); %>
+                    <% if (diffHours === 0) { %>
+                      <% const diffMinutes = Math.ceil(diffTime / (1000 * 60)); %>
+                      <%= diffMinutes === 1 ? '1 minute ago' : diffMinutes + ' minutes ago' %>
+                    <% } else { %>
+                      <%= diffHours === 1 ? '1 hour ago' : diffHours + ' hours ago' %>
+                    <% } %>
+                  <% } else { %>
+                    <%= diffDays === 1 ? '1 day ago' : diffDays + ' days ago' %>
+                  <% } %>
               
             </div>
         </div>
