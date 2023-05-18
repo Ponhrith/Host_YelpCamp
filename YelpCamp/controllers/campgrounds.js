@@ -51,7 +51,7 @@ module.exports.showCampground=async(req,res)=>{
     }
 
     const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
-    const formattedDate = moment(campground.createdAt).fromNow();
+    const formattedDate = moment(campground.createdAt.toISOString()).fromNow();
 
 
     
