@@ -50,7 +50,7 @@ module.exports.showCampground=async(req,res)=>{
         return res.redirect('/campgrounds');
     }
 
-    if(campground.createdAt){
+    if(campground){
         const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
 
         const formattedDate = moment(campground.createdAt.toISOString()).fromNow();
@@ -62,7 +62,7 @@ module.exports.showCampground=async(req,res)=>{
         });
     }else{
         res.render('campgrounds/show',{
-            campground,
+            campground: null,
             daysAgo: "N/A",
             formattedDate: "N/A"
         });
