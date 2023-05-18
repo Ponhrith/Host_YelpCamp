@@ -3,6 +3,7 @@ const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken=process.env.MAPBOX_TOKEN;
 const geocoder=mbxGeocoding({ accessToken: mapBoxToken });
 const {cloudinary}=require('../cloudinary');
+const moment = require('moment');
 
 module.exports.index=async(req,res)=>{
         const campgrounds=await Campground.find({});
@@ -34,7 +35,7 @@ module.exports.createCampground=async (req,res,next)=>{
     res.redirect(`/campgrounds/${campground._id}`);
 }
 
-const moment = require('moment')
+
 
 module.exports.showCampground=async(req,res)=>{
     const campground=await Campground.findById(req.params.id).populate({
@@ -50,12 +51,14 @@ module.exports.showCampground=async(req,res)=>{
     }
 
     const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
+    const formattedDate = moment(campground.createdAt).fromNow();
+
 
     
   
 
     //console.log(campground)
-    res.render('campgrounds/show',{campground, daysAgo});
+    res.render('campgrounds/show',{campground, daysAgo, formattedDate});
 }
 
 module.exports.renderEditForm=async(req,res)=>{
