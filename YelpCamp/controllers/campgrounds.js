@@ -49,15 +49,13 @@ module.exports.showCampground=async(req,res)=>{
         return res.redirect('/campgrounds');
     }
 
-    const now = new Date();
-    const createdAt = campground.createdAt;
-    const diffTime = Math.abs(now - createdAt);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
+
     
   
 
     //console.log(campground)
-    res.render('campgrounds/show',{campground, diffDays});
+    res.render('campgrounds/show',{campground, daysAgo});
 }
 
 module.exports.renderEditForm=async(req,res)=>{
