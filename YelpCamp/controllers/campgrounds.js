@@ -44,7 +44,7 @@ module.exports.showCampground=async(req,res)=>{
             path:'author',  //nested population for author of reviews
             createdAt: true
         }
-    }).populate('author').lean();  //populating author of this campground
+    }).populate('author').lean();  //getting plain object of the campground
     //console.log(campground);
     if(!campground){
         req.flash('error',"can't find that campground");
@@ -52,15 +52,23 @@ module.exports.showCampground=async(req,res)=>{
     }
 
     if(campground){
-        const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
+        if(campground.createdAt){
+            const daysAgo = Math.floor((Date.now() - campground.createdAt) / (1000 * 60 * 60 * 24));
 
-        const formattedDate = moment(campground.createdAt.toISOString()).fromNow();
+            const formattedDate = moment(campground.createdAt.toISOString()).fromNow();
 
-        res.render('campgrounds/show',{
-            campground,
-            daysAgo,
-            formattedDate
-        });
+            res.render('campgrounds/show',{
+                campground,
+                daysAgo,
+                formattedDate
+            });
+        }else{
+            res.render('campgrounds/show',{
+                campground,
+                daysAgo: "N/A",
+                formattedDate: "N/A"
+            });
+        }
     }else{
         res.render('campgrounds/show',{
             campground: null,
