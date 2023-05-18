@@ -41,7 +41,8 @@ module.exports.showCampground=async(req,res)=>{
     const campground=await Campground.findById(req.params.id).populate({
         path:'reviews',  //populating reviews of this campground
         populate:{
-            path:'author'  //nested population for author of reviews
+            path:'author',  //nested population for author of reviews
+            createdAt: true
         }
     }).populate('author');  //populating author of this campground
     //console.log(campground);
