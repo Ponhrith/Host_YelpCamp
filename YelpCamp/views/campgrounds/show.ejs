@@ -1,4 +1,3 @@
-Copy code
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheets/stars.css">
 
@@ -45,7 +44,13 @@ Copy code
             <% } %>
 
             <div class="card-footer text-muted">
-                <%= formatDate(campground.createdAt) %>
+                <script>
+                    const createdAt = '<%= campground.createdAt %>';
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    const date = new Date(createdAt);
+                    const formattedDate = date.toLocaleDateString(undefined, options);
+                    document.write(formattedDate);
+                </script>
             </div>
         </div>
 
@@ -67,7 +72,7 @@ Copy code
                 <p class="card-text">Review: <%= review.body %></p>
                 <%  if( currentUser && review.author.equals(currentUser._id))  {%>
                 <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                    <button    class="btn btn-sm btn-danger">Delete
+                    <button class="btn btn-sm btn-danger">Delete
                     </button>
                 </form>
                 <% } %>
@@ -76,16 +81,5 @@ Copy code
         <% } %>
     </div>
 </div>
-
-<script>
-    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const campground = <%- JSON.stringify(campground) %>;
-
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const date = new Date(dateString);
-        return date.toLocaleDateString(undefined, options);
-    }
-</script>
 
 <script src="/javascripts/showPageMap.js"></script>
