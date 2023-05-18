@@ -30,21 +30,42 @@ module.exports.createCampground = async (req, res, next) => {
 };
 
 module.exports.showCampground = async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
-    .populate({
-      path: 'reviews',
-      populate: {
-        path: 'author',
-        select: 'username'
+    try {
+      const campground = await Campground.findById(req.params.id)
+        .populate({
+          path: 'reviews',
+          populate: {
+            path: 'author',
+            select: 'username',
+          },
+        })
+        .populate('author')
+        .lean();
+  
+      if (!campground) {
+        req.flash('error', "Can't find that campground");
+        return res.redirect('/campgrounds');
       }
-    })
-    .populate('author')
-    .lean();
-
-  if (!campground) {
-    req.flash('error', "Can't find that campground");
-    return res.redirect('/campgrounds');
-  }
+  
+      const createdAt = campground.createdAt;
+      const daysAgo = createdAt ? Math.floor((Date.now() - createdAt) / (1000 * 60 * 60 * 24)) : NaN;
+      const formattedDate = createdAt ? moment(createdAt).fromNow() : "N/A";
+  
+      const currentUser = req.user;
+      const isAuthor = currentUser && campground.author && currentUser._id.equals(campground.author._id);
+  
+      res.render('campgrounds/show', {
+        campground,
+        daysAgo,
+        formattedDate,
+        currentUser,
+        isAuthor,
+      });
+    } catch (err) {
+      console.log(err);
+      req.flash('error', 'Something went wrong');
+      res.redirect('/campgrounds');
+    }
 
   const formattedDate = campground.createdAt ? moment(campground.createdAt).fromNow() : 'N/A';
 
@@ -52,7 +73,7 @@ module.exports.showCampground = async (req, res) => {
     campground,
     formattedDate
   });
-  
+
 }
 
 
