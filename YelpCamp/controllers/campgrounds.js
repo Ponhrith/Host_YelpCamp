@@ -52,7 +52,8 @@ module.exports.showCampground = async (req, res) => {
     campground,
     formattedDate
   });
-};
+  
+}
 
 
 
