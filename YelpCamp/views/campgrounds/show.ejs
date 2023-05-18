@@ -47,21 +47,7 @@
                     const now = new Date();
                     const timeElapsed = now - submittedDate;
                     const daysElapsed = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
-            
-                    if (daysElapsed === 0) {
-                        const hoursElapsed = Math.floor(timeElapsed / (1000 * 60 * 60));
-                        const minutesElapsed = Math.floor(timeElapsed / (1000 * 60));
-            
-                        if (hoursElapsed > 0) {
-                            document.write(hoursElapsed + " hours ago");
-                        } else if (minutesElapsed > 0) {
-                            document.write(minutesElapsed + " minutes ago");
-                        } else {
-                            document.write("Just now");
-                        }
-                    } else {
-                        document.write(daysElapsed + " days ago");
-                    }
+                    document.write(daysElapsed + " days ago");
                 </script>
               
             </div>
