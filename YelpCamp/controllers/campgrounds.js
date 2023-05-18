@@ -55,7 +55,7 @@ module.exports.showCampground=async(req,res)=>{
   
 
     //console.log(campground)
-    res.render('campgrounds/show',{campground});
+    res.render('campgrounds/show',{campground, daysAgo});
 }
 
 module.exports.renderEditForm=async(req,res)=>{
