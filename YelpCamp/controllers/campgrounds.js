@@ -44,7 +44,7 @@ module.exports.showCampground=async(req,res)=>{
             path:'author',  //nested population for author of reviews
             createdAt: true
         }
-    }).populate('author');  //populating author of this campground
+    }).populate('author').lean();  //populating author of this campground
     //console.log(campground);
     if(!campground){
         req.flash('error',"can't find that campground");
