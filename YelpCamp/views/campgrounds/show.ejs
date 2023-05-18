@@ -43,7 +43,7 @@
             <% } %>
             <div class="card-footer text-muted">
                 <script>
-                    const submittedDate = new Date('<%= campground.createdAt.toISOString() %>');
+                    const submittedDate = new Date('<%= campground.createdAt %>');
                     console.log(campground.createdAt);
                     const now = new Date();
                     const timeElapsed = now - submittedDate;
