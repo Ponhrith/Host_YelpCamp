@@ -42,7 +42,13 @@
             </div>
             <% } %>
             <div class="card-footer text-muted">
-                2 days ago
+                <script>
+                    const submittedDate = new Date('<%= campground.createdAt %>');
+                    const now = new Date();
+                    const timeElapsed = now - submittedDate;
+                    const daysElapsed = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+                    document.write(daysElapsed + " days ago");
+                </script>
             </div>
         </div>
 
