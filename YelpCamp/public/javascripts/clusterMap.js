@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/light-v10',
     // center: [-103.59179687498357, 40.66995747013945],
     center: [104.990963, 12.565679], // Cambodia coordinates
-    zoom: 5
+    zoom: 6
 });
 
 map.addControl(new mapboxgl.NavigationControl());
