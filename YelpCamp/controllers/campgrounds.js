@@ -58,24 +58,70 @@ module.exports.renderEditForm=async(req,res)=>{
     res.render('campgrounds/edit',{campground});
 }
 
-module.exports.updateCampground=async(req,res,next)=>{
-    const {id}=req.params;
-    // console.log(req.body);
-    const campground=await Campground.findByIdAndUpdate(id,req.body.campground,{runValidators:true,new:true});
-    const imgs=req.files.map(f=>({url:f.path, filename:f.filename}));
-    campground.images.push(...imgs); //push on existing images
-    await campground.save();
-    if(req.body.deleteImages){
-        for(let filename of req.body.deleteImages){
-            await cloudinary.uploader.destroy(filename);
-        }
-        await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
-        // console.log(campground);
+// module.exports.updateCampground=async(req,res,next)=>{
+//     const {id}=req.params;
+//     // console.log(req.body);
+//     const campground=await Campground.findByIdAndUpdate(id,req.body.campground,{runValidators:true,new:true});
+//     const imgs=req.files.map(f=>({url:f.path, filename:f.filename}));
+//     campground.images.push(...imgs); //push on existing images
+//     await campground.save();
+//     if(req.body.deleteImages){
+//         for(let filename of req.body.deleteImages){
+//             await cloudinary.uploader.destroy(filename);
+//         }
+//         await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
+//         // console.log(campground);
+//     }
+//     req.flash('success','successfully updated a campground!');
+//     //res.send(req.body.campground);
+//     res.redirect(`/campgrounds/${campground._id}`);
+// }
+
+module.exports.updateCampground = async (req, res, next) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+  
+    if (!campground) {
+      req.flash('error', "Can't find that campground");
+      return res.redirect('/campgrounds');
     }
-    req.flash('success','successfully updated a campground!');
-    //res.send(req.body.campground);
+  
+    // Update the campground properties
+    campground.title = req.body.campground.title;
+    campground.location = req.body.campground.location;
+    campground.description = req.body.campground.description;
+    campground.price = req.body.campground.price;
+  
+    // Geocode the new location
+    const geoData = await geocoder
+      .forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+      })
+      .send();
+  
+    campground.geometry = geoData.body.features[0].geometry;
+  
+    // Update the images
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    campground.images.push(...imgs);
+  
+    await campground.save();
+  
+    // Handle deleted images
+    if (req.body.deleteImages) {
+      for (let filename of req.body.deleteImages) {
+        await cloudinary.uploader.destroy(filename);
+      }
+      await campground.updateOne({
+        $pull: { images: { filename: { $in: req.body.deleteImages } } }
+      });
+    }
+  
+    req.flash('success', 'Successfully updated a campground!');
     res.redirect(`/campgrounds/${campground._id}`);
-}
+  };
+  
 
 module.exports.deleteCampground=async(req,res)=>{
     const {id}=req.params;
