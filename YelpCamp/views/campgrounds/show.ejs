@@ -42,7 +42,7 @@
             </div>
             <% } %>
             <div class="card-footer text-muted">
-                Posted <%= moment(campground.createdAt).from(currentDate) %>
+                Posted <%= moment(campground.createdAt).fromNow() %>
             </div>
         </div>
 
