@@ -29,7 +29,7 @@ module.exports.createCampground=async (req,res,next)=>{
     campground.author=req.user._id;
     // console.log(campground);
     await campground.save();
-    req.flash('success','successfully made a new campground!');
+    req.flash('Success','Successfully Made A New Campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 }
 
@@ -42,7 +42,7 @@ module.exports.showCampground=async(req,res)=>{
     }).populate('author');  //populating author of this campground
     //console.log(campground);
     if(!campground){
-        req.flash('error',"can't find that campground");
+        req.flash('Error',"Can't Find that Campground");
         return res.redirect('/campgrounds');
     }
     //console.log(campground)
@@ -52,7 +52,7 @@ module.exports.showCampground=async(req,res)=>{
 module.exports.renderEditForm=async(req,res)=>{
     const campground=await Campground.findById(req.params.id);
     if(!campground){
-        req.flash('error',"can't find that campground");
+        req.flash('Error',"Can't Find that Campground");
         return res.redirect('/campgrounds');
     }
     res.render('campgrounds/edit',{campground});
@@ -82,7 +82,7 @@ module.exports.updateCampground = async (req, res, next) => {
     const campground = await Campground.findById(id);
   
     if (!campground) {
-      req.flash('error', "Can't find that campground");
+      req.flash('Error', "Can't find that campground");
       return res.redirect('/campgrounds');
     }
   
@@ -118,7 +118,7 @@ module.exports.updateCampground = async (req, res, next) => {
       });
     }
   
-    req.flash('success', 'Successfully updated a campground!');
+    req.flash('Success', 'Successfully Updated a Campground!');
     res.redirect(`/campgrounds/${campground._id}`);
   };
   
@@ -126,6 +126,6 @@ module.exports.updateCampground = async (req, res, next) => {
 module.exports.deleteCampground=async(req,res)=>{
     const {id}=req.params;
     const campground=await Campground.findByIdAndDelete(id);
-    req.flash('success','successfully deleted a campground');
+    req.flash('Success','Successfully Deleted a Campground');
     res.redirect('/campgrounds');
 }
