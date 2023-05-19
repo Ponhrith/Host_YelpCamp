@@ -27,6 +27,14 @@ module.exports.createCampground=async (req,res,next)=>{
     campground.geometry=geoData.body.features[0].geometry;
     campground.images=req.files.map(f=>({url:f.path, filename:f.filename}));  //it will make an array which will contain objects(in which we have url and filename of image)
     campground.author=req.user._id;
+
+    //--------------------------------
+    campground.createdAt = new Date();
+
+
+    //--------------------------------
+
+
     // console.log(campground);
     await campground.save();
     req.flash('Success','Successfully Made A New Campground!');
@@ -46,7 +54,11 @@ module.exports.showCampground=async(req,res)=>{
         return res.redirect('/campgrounds');
     }
     //console.log(campground)
-    res.render('campgrounds/show',{campground});
+
+    //--------------------------------
+    res.render('campgrounds/show',{campground, currentDate: new Date() });
+
+    //--------------------------------
 }
 
 module.exports.renderEditForm=async(req,res)=>{
