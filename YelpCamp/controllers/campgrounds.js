@@ -57,7 +57,10 @@ module.exports.showCampground=async(req,res)=>{
     //console.log(campground)
 
     //--------------------------------
-    res.render('campgrounds/show',{campground, currentDate: new Date(), moment });
+    // res.render('campgrounds/show',{campground, currentDate: new Date(), moment });
+
+    res.render('campgrounds/show', { campground, moment });
+
 
     //--------------------------------
 }
