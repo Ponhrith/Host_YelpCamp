@@ -49,23 +49,20 @@ module.exports.showCampground=async(req,res)=>{
             path:'author'  //nested population for author of reviews
         }
     }).populate('author');  //populating author of this campground
-    //console.log(campground);
+
     if(!campground){
         req.flash('Error',"Can't Find that Campground");
         return res.redirect('/campgrounds');
     }
-    //console.log(campground)
+
 
     //--------------------------------
     // res.render('campgrounds/show',{campground, currentDate: new Date(), moment });
 
-    // res.render('campgrounds/show', { campground, moment });
+    res.render('campgrounds/show', { campground, moment });
 
     
-  const currentDate = new Date();
-  const formattedDate = moment(campground.createdAt).fromNow();
 
-  res.render('campgrounds/show', { campground, formattedDate });
 
 
 
