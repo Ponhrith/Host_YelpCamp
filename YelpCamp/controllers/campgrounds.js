@@ -4,6 +4,7 @@ const mapBoxToken=process.env.MAPBOX_TOKEN;
 const geocoder=mbxGeocoding({ accessToken: mapBoxToken });
 const {cloudinary}=require('../cloudinary');
 const moment = require('moment');
+const momentTimezone = require('moment-timezone');
 
 module.exports.index=async(req,res)=>{
         const campgrounds=await Campground.find({});
