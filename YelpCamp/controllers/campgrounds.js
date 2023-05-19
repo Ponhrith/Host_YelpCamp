@@ -56,12 +56,18 @@ module.exports.showCampground=async(req,res)=>{
     }
 
 
+
+
     //--------------------------------
     // res.render('campgrounds/show',{campground, currentDate: new Date(), moment });
 
-    res.render('campgrounds/show', { campground, moment });
+    // res.render('campgrounds/show', { campground, moment });
 
-    
+     const postDate = moment(campground.createdAt).format('MMMM Do YYYY, h:mm:ss a');
+     res.render('campgrounds/show', {
+      campground,
+      postDate
+    });
 
 
 

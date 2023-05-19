@@ -1,3 +1,4 @@
+<script src="/javascripts/moment.min.js"></script>
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheets/stars.css">
 <div class="row">
@@ -43,7 +44,7 @@
             <% } %>
             <div class="card-footer text-muted">
                
-                Posted <%= moment(campground.createdAt).fromNow() %>
+                Posted <%= moment(campground.createdAt).format('MMMM Do YYYY, h:mm:ss a') %>
 
             </div>
         </div>
